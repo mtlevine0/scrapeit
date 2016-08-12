@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Static Uploads
+static/upload/
+
+# Properties file
+properties.txt
