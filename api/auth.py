@@ -1,9 +1,13 @@
-from flask import Flask, Blueprint, request, redirect, url_for, Response, send_from_directory
+from flask import Blueprint, render_template 
 #import peewee as pw
 #import database as db
 
 auth_api = Blueprint('auth_api', __name__)
 
-@auth_api.route('/api/auth', methods=['GET'])
+@auth_api.route('/auth', methods=['GET'])
 def auth():
-    return "Hello World!"
+    return render_template('auth.html')
+    
+@auth_api.route('/auth', methods=['POST'])
+def auth_post():
+    return render_template('account_summary.html')
