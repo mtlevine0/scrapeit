@@ -72,10 +72,10 @@ def private():
     
     return resp
 
-@auth_api.route('/auth', methods=['GET'])
-def auth():
-    return render_template('auth.html')
+# @auth_api.route('/auth', methods=['GET'])
+# def auth():
+#     return render_template('auth.html')
     
-@auth_api.route('/auth', methods=['POST'])
-def auth_post():
-    return render_template('account_summary.html')
+# @auth_api.route('/auth', methods=['POST'])
+# def auth_post():
+#     return render_template('account_summary.html')
