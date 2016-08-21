@@ -11,3 +11,4 @@ debug=
 # JWT
 JWTSecret=
 JWTAlgo=
+JWTTTL=

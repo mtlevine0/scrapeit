@@ -37,9 +37,9 @@ def auth():
         if user.password == request_data['password']:
             payload['iss'] = 'scrapeit'
             payload['iat'] = datetime.datetime.utcnow()
-            payload['exp'] = datetime.datetime.utcnow() + datetime.timedelta(seconds=30)
+            payload['exp'] = datetime.datetime.utcnow() + datetime.timedelta(seconds=int(properties.d['JWTTTL']))
             payload['aud'] = 'ide.c9.io'
-            payload['sub'] = 'test'
+            payload['sub'] = 'Dev'
             payload['username'] = request_data["username"]
             encoded = jwt.encode(payload, properties.d['JWTSecret'], algorithm=properties.d['JWTAlgo'])
             responseObj['jwt'] = encoded
