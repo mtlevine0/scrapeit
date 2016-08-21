@@ -1,0 +1,98 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ScrapeIt",
+		"_postman_id": "db9a5149-b2c4-b15e-96c9-529c4f9f5bf9",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "var jsonData = JSON.parse(responseBody);\r\npostman.setEnvironmentVariable(\"jwt\", jsonData.jwt);\r\n\r\ntests[\"User Registered Test\"] = jsonData.success;"
+					}
+				}
+			],
+			"request": {
+				"url": "{{host}}/api/auth/register",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "var jsonData = JSON.parse(responseBody);\r\npostman.setEnvironmentVariable(\"jwt\", jsonData.jwt);\r\n\r\ntests[\"Status code is 200\"] = responseCode.code === 200;\r\ntests[\"User Login Test\"] = jsonData.success;"
+					}
+				}
+			],
+			"request": {
+				"url": "{{host}}/api/auth/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Test Auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "var jsonData = JSON.parse(responseBody);\ntests[\"Status code is 200\"] = responseCode.code === 200;\ntests[\"Valid JWT\"] = !jsonData.error;"
+					}
+				}
+			],
+			"request": {
+				"url": "{{host}}/api/auth/private",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
