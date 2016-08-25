@@ -1,7 +1,55 @@
- {% extends "base.html" %}
- 
- {% block content %}
- 
-    index 
+<!doctype html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+		<script src="https://code.angularjs.org/1.5.3/angular-route.min.js"></script>
+		<script src="/static/js/app.js"></script>
+		<link rel="stylesheet" href="/static/css/style.css" />
+   
+        <style>
+            body {margin:0;}
+            
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #564138;
+                position: fixed;
+                top: 0;
+                width: 100%;
+            }
+            
+            li {
+                float: left;
+            }
+            
+            li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            
+            li a:hover:not(.active) {
+                background-color: #111;
+            }
+            
+            .active {
+                background-color: #F24236;
+            }
+        </style>
+    </head>
 
- {% endblock %}
+    <body ng-app="myApp">
+        <ul>
+          <li><a class="active" href="/#/index">Home</a></li>
+          <li><a href="/#/scrape">Scrape</a></li>
+          <li><a href="/#/settings">Settings</a></li>
+          <li><a href="/#/summary">Summary</a></li>
+        </ul>
+		
+        <div ng-view></div>
+    </body>
+</html>

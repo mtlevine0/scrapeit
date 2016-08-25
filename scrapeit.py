@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def main():
-    return send_from_directory("static/", "index.html")
+    return send_from_directory("templates/","index.html")
 
 PORT = int(os.getenv('PORT', properties.d["port"]))
 
