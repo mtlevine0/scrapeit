@@ -1,4 +1,8 @@
 from flask import Flask, Blueprint, request, redirect, url_for, Response, send_from_directory, jsonify
+
+from functools import wraps
+from flask import g
+
 import peewee as pw
 import database as db
 import jwt
@@ -6,6 +10,8 @@ import json
 import properties
 import datetime
 import time
+
+import auth_decorator
 
 auth_api = Blueprint('auth_api', __name__)
 
@@ -50,32 +56,26 @@ def auth():
             return jsonify(responseObj)
     
 @auth_api.route('/api/auth/private', methods=['GET'])
+@auth_decorator.login_required
 def private():
     JWTBearer = request.headers.get('Authorization').split(' ')[1]
     payload = {}
     try:
         payload = jwt.decode(JWTBearer, properties.d['JWTSecret'], audience='ide.c9.io', issuer='scrapeit')
-    except jwt.InvalidIssuedAtError:
-        payload['error'] = 'InvalidIssuedAtError'
-        resp = Response(json.dumps(payload), status=403, mimetype='application/json')
-    except jwt.ExpiredSignatureError:
-        payload['error'] = 'ExpiredSignatureError'
-        resp = Response(json.dumps(payload), status=403, mimetype='application/json')
-    except jwt.InvalidAudienceError:
-        payload['error'] = 'InvalidAudienceError'
-        resp = Response(json.dumps(payload), status=403, mimetype='application/json')
-    except jwt.InvalidIssuerError:
-        payload['error'] = 'InvalidIssuerError'
-        resp = Response(json.dumps(payload), status=403, mimetype='application/json')
-    else:
-        resp = Response(json.dumps(payload), status=200, mimetype='application/json')
+    except:
+        pass
+    return jsonify(payload['username'])
     
-    return resp
+@auth_api.route('/api/auth/test', methods=['GET'])
+@auth_decorator.login_required
+def test():
+    JWTBearer = request.headers.get('Authorization').split(' ')[1]
+    payload = {}
+    try:
+        payload = jwt.decode(JWTBearer, properties.d['JWTSecret'], audience='ide.c9.io', issuer='scrapeit')
+    except:
+        pass
+    return jsonify(payload)
 
-# @auth_api.route('/auth', methods=['GET'])
-# def auth():
-#     return render_template('auth.html')
-    
-# @auth_api.route('/auth', methods=['POST'])
-# def auth_post():
-#     return render_template('account_summary.html')
+
+

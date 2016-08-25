@@ -1,4 +1,5 @@
 flask
+Flask-JWT
 werkzeug
 peewee
 MySQL-python
