@@ -11,7 +11,7 @@ import properties
 import datetime
 import time
 
-import auth_decorator
+from api import auth_decorator
 
 auth_api = Blueprint('auth_api', __name__)
 

@@ -1,5 +1,5 @@
 from flask import Flask, send_from_directory
-from api import auth, account, auth_decorator
+from api import auth, account
 import os
 import properties
 
