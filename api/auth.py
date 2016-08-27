@@ -12,6 +12,7 @@ import datetime
 import time
 
 from api import auth_decorator
+import bcrypt
 
 auth_api = Blueprint('auth_api', __name__)
 
@@ -19,8 +20,12 @@ auth_api = Blueprint('auth_api', __name__)
 def register():
     request_data = request.get_json()
     payload = {}
+    
+    password = request_data['password']
+    hashed = bcrypt.hashpw(password, bcrypt.gensalt())
+    
     try:
-        db.User.create(username=request_data['username'], password=request_data['password'])
+        db.User.create(username=request_data['username'], passwordHash=hashed)
     except:
         payload['error'] = 'failed to register user'
         return jsonify(payload)
@@ -30,7 +35,7 @@ def register():
     
 
 @auth_api.route('/api/auth/login', methods=['POST'])
-def auth():
+def login():
     request_data = request.get_json()
     payload = {}
     responseObj = {}
@@ -40,7 +45,7 @@ def auth():
         responseObj['error'] = 'User Authentication Failed'
         return jsonify(responseObj)
     else:
-        if user.password == request_data['password']:
+        if bcrypt.checkpw(request_data['password'], user.passwordHash):
             payload['iss'] = 'scrapeit'
             payload['iat'] = datetime.datetime.utcnow()
             payload['exp'] = datetime.datetime.utcnow() + datetime.timedelta(seconds=int(properties.d['JWTTTL']))
@@ -54,6 +59,28 @@ def auth():
         else:
             responseObj['error'] = 'User Authentication Failed'
             return jsonify(responseObj)
+            
+@auth_api.route('/api/auth/refresh', methods=['POST'])
+@auth_decorator.login_required
+def refresh():
+    # If the JWT is valid, hand out a new one
+    payload = {}
+    responseObj = {}
+    
+    JWTBearer = request.headers.get('Authorization').split(' ')[1]
+    incomingJWT = jwt.decode(JWTBearer, properties.d['JWTSecret'], audience='ide.c9.io', issuer='scrapeit')
+
+    payload['iss'] = 'scrapeit'
+    payload['iat'] = datetime.datetime.utcnow()
+    payload['exp'] = datetime.datetime.utcnow() + datetime.timedelta(seconds=int(properties.d['JWTTTL']))
+    payload['aud'] = 'ide.c9.io'
+    payload['sub'] = 'Dev'
+    payload['username'] = incomingJWT['username']
+    encoded = jwt.encode(payload, properties.d['JWTSecret'], algorithm=properties.d['JWTAlgo'])
+    responseObj['jwt'] = encoded
+    responseObj['success'] = 'Token Refresh Successful'
+    
+    return jsonify(responseObj)
     
 @auth_api.route('/api/auth/private', methods=['GET'])
 @auth_decorator.login_required
