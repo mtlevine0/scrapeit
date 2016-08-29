@@ -1,8 +1,9 @@
+import json
+
 from flask import Response, request
 from functools import wraps
-
-import json
 import jwt
+
 import properties
 
 def login_required(f):

@@ -1,7 +1,9 @@
-from flask import Flask, send_from_directory
-from api import auth, account
 import os
 import properties
+
+from flask import Flask, send_from_directory
+
+from api import auth_api, account_api
 import database as db
 
 app = Flask(__name__)
@@ -12,7 +14,6 @@ app = Flask(__name__)
 # appropriate method for handling connection pooling...
 @app.before_request
 def _db_connect():
-    print("opening DB pool connection.")
     db.myDB.connect()
 
 # This hook ensures that the connection is closed when we've finished
@@ -20,7 +21,6 @@ def _db_connect():
 @app.teardown_request
 def _db_close(exc):
     if not db.myDB.is_closed():
-        print("closing DB pool connection.")
         db.myDB.close()
 
 @app.route("/")
@@ -31,6 +31,6 @@ PORT = int(os.getenv('PORT', properties.d["port"]))
 
 if __name__ == '__main__':
     
-    app.register_blueprint(auth.auth_api)
-    app.register_blueprint(account.account_api)
+    app.register_blueprint(auth_api.auth_api)
+    app.register_blueprint(account_api.account_api)
     app.run(debug=properties.d["debug"], host=properties.d["host"], port=PORT)

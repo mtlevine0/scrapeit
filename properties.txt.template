@@ -12,3 +12,6 @@ debug=
 JWTSecret=
 JWTAlgo=
 JWTTTL=
+JWTIss=
+JWTAud=
+JWTSub=

@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+
 import auth_decorator
 
 account_api = Blueprint('account_api', __name__)
