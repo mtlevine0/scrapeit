@@ -16,14 +16,18 @@ def register():
     password = requestObj['password']
     username = requestObj['username']
     email = requestObj['email']
-    try:
-        db.User.add(username=username, password=password, email=email)
-    except:
-        responseObj['error'] = 'failed to register user'
-        return jsonify(responseObj)
+    if not usernameAvailable(username):
+        try:
+            db.User.add(username=username, password=password, email=email)
+        except:
+            responseObj['error'] = 'failed to register user'
+            return jsonify(responseObj)
+        else:
+            responseObj['jwt'] = generateJWT(username)
+            responseObj['success'] = 'registered user'
+            return jsonify(responseObj)
     else:
-        responseObj['jwt'] = generateJWT(username)
-        responseObj['success'] = 'registered user'
+        responseObj['error'] = "username not available"
         return jsonify(responseObj)
     
 
@@ -91,6 +95,13 @@ def generateJWT(username):
     JWT['username'] = username
     JWTEncoded = jwt.encode(JWT, properties.d['JWTSecret'], algorithm=properties.d['JWTAlgo'])
     return JWTEncoded
-
+    
+def usernameAvailable(username):
+    try:
+        user = db.User.get(username=username)
+    except:
+        return False
+    else:
+        return True
 
 
