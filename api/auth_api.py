@@ -10,6 +10,7 @@ from api import auth_decorator
 auth_api = Blueprint('auth_api', __name__)
 
 @auth_api.route('/api/auth/register', methods=['POST'])
+@auth_decorator.register_validation
 def register():
     requestObj = request.get_json()
     responseObj= {}
