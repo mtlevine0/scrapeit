@@ -1,0 +1,12 @@
+flask
+Flask-JWT
+werkzeug
+peewee
+<<<<<<< HEAD:requirements.txt
+MySQL-python
+PyJWT
+py-bcrypt
+=======
+mysqlclient
+PyJWT
+>>>>>>> 4b41779a577e1b01ca85769c69b447d93320079c:pipRequirements.txt
