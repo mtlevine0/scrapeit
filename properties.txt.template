@@ -7,3 +7,11 @@ dbPass=
 port=
 host=
 debug=
+
+# JWT
+JWTSecret=
+JWTAlgo=
+JWTTTL=
+JWTIss=
+JWTAud=
+JWTSub=

@@ -1,4 +1,7 @@
 flask
+Flask-JWT
 werkzeug
 peewee
 MySQL-python
+PyJWT
+py-bcrypt
