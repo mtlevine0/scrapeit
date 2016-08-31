@@ -93,3 +93,6 @@ static/upload/
 
 # Properties file
 properties.txt
+
+# .c9 env files
+.c9
