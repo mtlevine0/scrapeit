@@ -3,6 +3,8 @@ from flask import render_template, url_for, redirect, send_from_directory
 import json
 
 
+from api import auth_decorator
+
 account_api = Blueprint('account_api', __name__)
 
 
