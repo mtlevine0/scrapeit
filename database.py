@@ -21,6 +21,7 @@ class User(BaseModel):
 
 class Scrape(BaseModel):
     uid = pw.ForeignKeyField(User)
+    item_classification = pw.CharField(max_length=255)
 
 
 # when you're ready to start querying, remember to connect
