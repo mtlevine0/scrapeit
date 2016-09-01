@@ -37,6 +37,9 @@ def login_required(f):
             else:
                 responseObj['error'] = 'InvalidAuthorizationHeader'
                 return Response(json.dumps(responseObj), status=403, mimetype='application/json')
+                
+            kwargs['JWT'] = responseObj
+                
         return f(*args, **kwargs)
     return decorated_function
     
@@ -68,6 +71,6 @@ def register_validation(f):
         if (len(username) < 5) or (len(username) >= 32):
             responseObj['error'] = 'Invalid Username Length: Must be between 5 and 32 characters.'
             return Response(json.dumps(responseObj), status=500, mimetype='application/json')
-
+        
         return f(*args, **kwargs)
     return decorated_function
