@@ -1,0 +1,6 @@
+flask
+werkzeug
+peewee
+mysqlclient
+PyJWT
+py-bcrypt
