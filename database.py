@@ -6,7 +6,7 @@ import bcrypt
 
 import properties
 
-myDB = PooledMySQLDatabase(properties.d["database"], max_connections=32, stale_timeout=300, user=properties.d["dbUser"])
+myDB = PooledMySQLDatabase(properties.d["database"], max_connections=32, stale_timeout=300, user=properties.d["dbUser"], password=properties.d["dbPass"])
 
 class User(pw.Model):
     username = pw.CharField(max_length=255, primary_key=True)
