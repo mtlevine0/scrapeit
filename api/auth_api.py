@@ -78,14 +78,8 @@ def private():
     
 @auth_api.route('/api/auth/test', methods=['GET'])
 @auth_decorator.login_required
-def test():
-    JWTBearer = request.headers.get('Authorization').split(' ')[1]
-    responseObj = {}
-    try:
-        responseObj = jwt.decode(JWTBearer, properties.d['JWTSecret'], audience=properties.d['JWTAud'], issuer=properties.d['JWTIss'])
-    except:
-        pass
-    return jsonify(responseObj)
+def test(JWT):
+    return jsonify(JWT)
     
 def generateJWT(username):
     JWT = {}
