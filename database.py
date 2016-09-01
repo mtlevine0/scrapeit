@@ -17,14 +17,14 @@ class User(pw.Model):
     
     @classmethod    
     def _hashPassword(self, password):
-        return bcrypt.hashpw(password, bcrypt.gensalt())
+        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         
     @classmethod
     def add(self, username, password, email):
         return self.create(username=username, passwordHash=self._hashPassword(password), email=email)
 
     def checkPassword(self, password):
-        return bcrypt.checkpw(password, self.passwordHash)
+        return bcrypt.checkpw(password.encode('utf-8'), self.passwordHash.encode('utf-8'))
 
     class Meta:
         database = myDB

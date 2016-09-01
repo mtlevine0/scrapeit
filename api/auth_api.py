@@ -10,13 +10,16 @@ from api import auth_decorator
 auth_api = Blueprint('auth_api', __name__)
 
 @auth_api.route('/api/auth/register', methods=['POST'])
-@auth_decorator.register_validation
+#@auth_decorator.register_validation
 def register():
     requestObj = request.get_json()
     responseObj= {}
     password = requestObj['password']
     username = requestObj['username']
     email = requestObj['email']
+    
+    # db.User.add(username=username, password=password, email=email)
+    # return "test"
     if not usernameAvailable(username):
         try:
             db.User.add(username=username, password=password, email=email)
@@ -94,7 +97,7 @@ def generateJWT(username):
     JWT['aud'] = properties.d['JWTAud']
     JWT['sub'] = properties.d['JWTSub']
     JWT['username'] = username
-    JWTEncoded = jwt.encode(JWT, properties.d['JWTSecret'], algorithm=properties.d['JWTAlgo'])
+    JWTEncoded = jwt.encode(JWT, properties.d['JWTSecret'], algorithm=properties.d['JWTAlgo']).decode('utf-8')
     return JWTEncoded
     
 def usernameAvailable(username):
