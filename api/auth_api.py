@@ -66,15 +66,8 @@ def refresh():
     
 @auth_api.route('/api/auth/private', methods=['GET'])
 @auth_decorator.login_required
-def private():
-    JWTBearer = request.headers.get('Authorization').split(' ')[1]
-    responseObj = {}
-    try:
-        responseObj = jwt.decode(JWTBearer, properties.d['JWTSecret'], audience=properties.d['JWTAud'], issuer=properties.d['JWTIss'])
-    except:
-        responseObj['error'] = 'User Authentication Failed'
-        return jsonify(responseObj)
-    return jsonify(responseObj['username'])
+def private(JWT):
+    return jsonify(JWT['username'])
     
 @auth_api.route('/api/auth/test', methods=['GET'])
 @auth_decorator.login_required
