@@ -55,11 +55,9 @@ def login():
             
 @auth_api.route('/api/auth/refresh', methods=['POST'])
 @auth_decorator.login_required
-def refresh():
+def refresh(JWT):
     responseObj = {}
-    JWTBearer = request.headers.get('Authorization').split(' ')[1]
-    incomingJWT = jwt.decode(JWTBearer, properties.d['JWTSecret'], audience=properties.d['JWTAud'], issuer=properties.d['JWTIss'])
-    username = incomingJWT['username']
+    username = JWT['username']
     responseObj['jwt'] = generateJWT(username)
     responseObj['success'] = 'Token Refresh Successful'
     return jsonify(responseObj)
