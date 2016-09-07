@@ -29,8 +29,9 @@ def main():
 
 PORT = int(os.getenv('PORT', properties.d["port"]))
 
+app.register_blueprint(auth_api.auth_api)
+app.register_blueprint(account_api.account_api)
+
 if __name__ == '__main__':
     
-    app.register_blueprint(auth_api.auth_api)
-    app.register_blueprint(account_api.account_api)
     app.run(debug=properties.d["debug"], host=properties.d["host"], port=PORT)
