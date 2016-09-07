@@ -52,5 +52,8 @@ class Item(BaseModel):
 # when you're ready to start querying, remember to connect
 myDB.connect()
 #REMOVE WHEN PUSHED TO PRODUCTION
-myDB.drop_table(Scrape)
+try:
+    myDB.drop_table(Scrape)
+except:
+    pass
 myDB.create_tables([User,Scrape], safe=True)
