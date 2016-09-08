@@ -32,8 +32,7 @@ class User(BaseModel):
 
 
 class Scrape(BaseModel):
-    #uid = pw.ForeignKeyField(User)
-    uid = pw.IntegerField()
+    uid = pw.ForeignKeyField(User)
     name = pw.CharField(max_length=255, default="New Scrape")
     
     @classmethod
@@ -41,7 +40,7 @@ class Scrape(BaseModel):
         return self.create(uid=uid, name=name)
         
 class Item(BaseModel):
-    #sid = pw.ForeignKeyField(Scrape)
+    sid = pw.ForeignKeyField(Scrape)
     item_classification = pw.CharField(max_length=255)
     price = pw.CharField(max_length=255)
     create_date = pw.DateTimeField(default=datetime.datetime.now) #change this to be when it was posted

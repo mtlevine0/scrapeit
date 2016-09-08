@@ -9,14 +9,16 @@ scrape_api = Blueprint('scrape_api', __name__)
 
 
 @scrape_api.route('/api/scrape/create', methods=['POST'])
-#@auth_decorator.login_required
-def create_scrape():
+@auth_decorator.login_required
+def create_scrape(JWT):
     
+    user = db.User.get(username=JWT['username'])
+
     requestObj = request.get_json()
     responseObj= {}
     
-    uid = requestObj['uid']
     name = requestObj['name']
+    uid = user.id
     
     db.Scrape.add(uid=uid, name=name)
     
