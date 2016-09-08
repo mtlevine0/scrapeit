@@ -1,25 +1,28 @@
 'use strict';
 
-var myApp = angular.module('myApp', [
- 'ngRoute',
-]);
-
-myApp.config(['$routeProvider',
-     function($routeProvider) {
-         $routeProvider.
-             when('/', {
-                 templateUrl: '/static/partials/index.html',
-             }).
-             when('/scrape', {
-                 templateUrl: '../static/partials/scrape.html',
-             }).
-             when('/settings', {
-                 templateUrl: '../static/partials/settings.html',
-             }).
-             when('/summary', {
-                 templateUrl: '../static/partials/summary.html',
-             }).
-             otherwise({
-                 redirectTo: '/'
-             });
-    }]);
+angular.module('ScrapeIt', ['angularFlaskServices'])
+	.config(['$routeProvider', '$locationProvider',
+		function($routeProvider, $locationProvider) {
+		$routeProvider
+            .when('/', {
+                templateUrl: '/static/partials/index.html',
+                controller: IndexController
+            })
+            .when('/scrape', {
+                templateUrl: '../static/partials/scrape.html',
+                controller: ScrapeController
+            })
+            .when('/settings', {
+                templateUrl: '../static/partials/settings.html',
+                controller: SettingsController
+            })
+            .when('/summary', {
+                templateUrl: '../static/partials/summary.html',
+                controller: SummaryController
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
+            
+            $locationProvider.html5Mode(true);
+		}]);
