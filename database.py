@@ -43,9 +43,9 @@ class Item(BaseModel):
     sid = pw.ForeignKeyField(Scrape)
     item_classification = pw.CharField(max_length=255)
     price = pw.CharField(max_length=255)
-    create_date = pw.DateTimeField(default=datetime.datetime.now) #change this to be when it was posted
-    #yadadada
-    
+    url = pw.CharField(max_length=255)
+    idhash = pw.CharField(max_length=255)
+    create_date = pw.DateTimeField(default=datetime.datetime.now)#change this to be when it was posted
     
 
 # when you're ready to start querying, remember to connect
@@ -55,4 +55,4 @@ try:
     myDB.drop_table(Scrape)
 except:
     pass
-myDB.create_tables([User,Scrape], safe=True)
+myDB.create_tables([User,Scrape,Item], safe=True)
