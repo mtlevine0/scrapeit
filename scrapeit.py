@@ -3,7 +3,7 @@ import properties
 
 from flask import Flask, send_from_directory
 
-from api import auth_api, account_api
+from api import auth_api, account_api, scrape_api
 import database as db
 
 app = Flask(__name__)
@@ -31,6 +31,7 @@ PORT = int(os.getenv('PORT', properties.d["port"]))
 
 app.register_blueprint(auth_api.auth_api)
 app.register_blueprint(account_api.account_api)
+app.register_blueprint(scrape_api.scrape_api)
 
 if __name__ == '__main__':
     

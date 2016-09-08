@@ -19,6 +19,7 @@ def register():
     email = requestObj['email']
     
     if not usernameAvailable(username):
+        
         try:
             db.User.add(username=username, password=password, email=email)
         except:
@@ -28,6 +29,7 @@ def register():
             responseObj['jwt'] = generateJWT(username)
             responseObj['success'] = 'registered user'
             return jsonify(responseObj)
+        
     else:
         responseObj['error'] = "username not available"
         return jsonify(responseObj)
