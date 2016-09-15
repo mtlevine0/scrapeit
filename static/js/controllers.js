@@ -2,6 +2,12 @@
 
 /* Controllers */
 
+function NavBarController($scope, $location) { 
+    $scope.isActive = function (viewLocation) { 
+        return viewLocation === $location.path();
+    };
+}
+
 function IndexController($scope) {
 	
 }

@@ -6,16 +6,16 @@
         <meta charset="utf-8">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
         
+        
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         
-    	
-    	<link rel="stylesheet" href="/static/css/main.css">
-        
     	<script src="/static/lib/angular/angular.js"></script>
     	<script src="/static/lib/angular/angular-resource.js"></script>
-        
+    	
+    	<link rel="stylesheet" href="/static/css/main.css">
+    	
     	<script src="/static/js/app.js"></script>
     	<script src="/static/js/controllers.js"></script>
      	<script src="/static/js/services.js"></script>
@@ -28,16 +28,16 @@
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                        <span class="icon-bar"></span> 
+                        <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="#">ScrapeIt</a>
                 </div>
-                <div class="collapse navbar-collapse" id="myNavbar">
+                <div class="collapse navbar-collapse" id="myNavbar" ng-controller="NavBarController">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/scrape">Scrape</a></li>
-                        <li><a href="/settings">Settings</a></li> 
-                        <li><a href="/summary">Summary</a></li> 
+                        <li ng-class="{ active: isActive('/')}"><a href="/">Home</a></li>
+                        <li ng-class="{ active: isActive('/scrape')}"><a href="/scrape">Scrape</a></li>
+                        <li ng-class="{ active: isActive('/settings')}"><a href="/settings">Settings</a></li>
+                        <li ng-class="{ active: isActive('/summary')}"><a href="/summary">Summary</a></li>
                     </ul>
                 </div>
             </div>
@@ -46,11 +46,11 @@
     	<div class="container page">
     		<div id="content" class="container main" ng-view>
     		</div>
-    
+            
     		<hr>
     		<footer id="footer" class="footer">
     			<div class="footer-left">
-    				<a href="/about">About</a> |
+    				<a href="/about">About</a> | 
     				<a href="/">Home</a>
     			</div>
     			<div class="footer-right">
