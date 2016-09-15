@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from flask import Flask, Blueprint, request, Response, jsonify
 import jwt
@@ -27,7 +28,11 @@ def register():
         else:
             responseObj['jwt'] = generateJWT(username)
             responseObj['success'] = 'registered user'
-            return jsonify(responseObj)
+            # return jsonify(responseObj)
+            responseTest = Response(json.dumps(responseObj), status=200, mimetype='application/json')
+            responseTest.set_cookie('jwt', responseObj['jwt'])
+            return responseTest
+
     else:
         responseObj['error'] = "username not available"
         return jsonify(responseObj)
@@ -48,7 +53,10 @@ def login():
         if user.checkPassword(password):
             responseObj['jwt'] = generateJWT(username)
             responseObj['success'] = 'User Authentication Successful'
-            return jsonify(responseObj)
+            # return jsonify(responseObj)
+            responseTest = Response(json.dumps(responseObj), status=200, mimetype='application/json')
+            responseTest.set_cookie('jwt', responseObj['jwt'])
+            return responseTest
         else:
             responseObj['error'] = 'User Authentication Failed'
             return jsonify(responseObj)
@@ -60,7 +68,10 @@ def refresh(JWT):
     username = JWT['username']
     responseObj['jwt'] = generateJWT(username)
     responseObj['success'] = 'Token Refresh Successful'
-    return jsonify(responseObj)
+    # return jsonify(responseObj)
+    responseTest = Response(json.dumps(responseObj), status=200, mimetype='application/json')
+    responseTest.set_cookie('jwt', responseObj['jwt'])
+    return responseTest
     
 @auth_api.route('/api/auth/private', methods=['GET'])
 @auth_decorator.login_required

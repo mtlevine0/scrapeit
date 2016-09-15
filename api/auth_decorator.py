@@ -11,7 +11,8 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         responseObj = {}
         try:
-            JWTBearer = request.headers.get('Authorization').split(' ')[1]
+            # JWTBearer = request.headers.get('Authorization').split(' ')[1]
+            JWTBearer = request.cookies.get('jwt')
         except:
             responseObj['error'] = 'InvalidJWT'
             return Response(json.dumps(responseObj), status=403, mimetype='application/json')
