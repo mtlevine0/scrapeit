@@ -36,3 +36,4 @@ app.register_blueprint(scrape_api.scrape_api)
 if __name__ == '__main__':
     
     app.run(debug=properties.d["debug"], host=properties.d["host"], port=PORT)
+    

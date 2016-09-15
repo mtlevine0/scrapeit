@@ -75,6 +75,10 @@ def test(JWT):
     return jsonify(JWT)
     
 def generateJWT(username):
+    
+    uid = db.User.get(username=username)
+    uid = uid.id
+    
     JWT = {}
     JWT['iss'] = properties.d['JWTIss']
     JWT['iat'] = datetime.datetime.utcnow()
@@ -82,6 +86,7 @@ def generateJWT(username):
     JWT['aud'] = properties.d['JWTAud']
     JWT['sub'] = properties.d['JWTSub']
     JWT['username'] = username
+    JWT['uid'] = uid
     JWTEncoded = jwt.encode(JWT, properties.d['JWTSecret'], algorithm=properties.d['JWTAlgo']).decode('utf-8')
     return JWTEncoded
     

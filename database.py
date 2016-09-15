@@ -29,7 +29,7 @@ class User(BaseModel):
 
     def checkPassword(self, password):
         return bcrypt.checkpw(password.encode('utf-8'), self.passwordHash.encode('utf-8'))
-
+        
 
 class Scrape(BaseModel):
     uid = pw.ForeignKeyField(User)
