@@ -25,10 +25,25 @@ class User(pw.Model):
 
     def checkPassword(self, password):
         return bcrypt.checkpw(password.encode('utf-8'), self.passwordHash.encode('utf-8'))
+        
+    def __str__(self):
+        return self.username
 
+    class Meta:
+        database = myDB
+        
+class Role(pw.Model):
+    username = pw.ForeignKeyField(User)
+    role = pw.CharField(max_length=128)
+    
+    @classmethod
+    def grantRole(self, username, role):
+        print(role)
+        return self.create(username=username, role=role)
+        
     class Meta:
         database = myDB
 
 # when you're ready to start querying, remember to connect
 myDB.connect()
-myDB.create_tables([User], safe=True)
+myDB.create_tables([User, Role], safe=True)

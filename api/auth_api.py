@@ -22,21 +22,26 @@ def register():
     if not usernameAvailable(username):
         try:
             db.User.add(username=username, password=password, email=email)
+            db.Role.grantRole(username=username, role='user')
         except:
             responseObj['error'] = 'failed to register user'
             return jsonify(responseObj)
         else:
-            responseObj['jwt'] = generateJWT(username)
+            responseObj['jwt'] = generateJWT(username, 'user')
             responseObj['success'] = 'registered user'
-            # return jsonify(responseObj)
             responseTest = Response(json.dumps(responseObj), status=200, mimetype='application/json')
             responseTest.set_cookie('jwt', responseObj['jwt'])
             return responseTest
-
+        
     else:
         responseObj['error'] = "username not available"
         return jsonify(responseObj)
-    
+        
+@auth_api.route('/api/auth/role', methods=['GET'])
+@auth_decorator.login_required(['admin', 'moderator', 'user'])
+def role(JWT):
+    print("testing role endpoint")
+    return jsonify(JWT)
 
 @auth_api.route('/api/auth/login', methods=['POST'])
 def login():
@@ -51,9 +56,8 @@ def login():
         return jsonify(responseObj)
     else:
         if user.checkPassword(password):
-            responseObj['jwt'] = generateJWT(username)
+            responseObj['jwt'] = generateJWT(username, 'user')
             responseObj['success'] = 'User Authentication Successful'
-            # return jsonify(responseObj)
             responseTest = Response(json.dumps(responseObj), status=200, mimetype='application/json')
             responseTest.set_cookie('jwt', responseObj['jwt'])
             return responseTest
@@ -62,28 +66,27 @@ def login():
             return jsonify(responseObj)
             
 @auth_api.route('/api/auth/refresh', methods=['POST'])
-@auth_decorator.login_required
+@auth_decorator.login_required(['admin', 'user'])
 def refresh(JWT):
     responseObj = {}
     username = JWT['username']
     responseObj['jwt'] = generateJWT(username)
     responseObj['success'] = 'Token Refresh Successful'
-    # return jsonify(responseObj)
     responseTest = Response(json.dumps(responseObj), status=200, mimetype='application/json')
     responseTest.set_cookie('jwt', responseObj['jwt'])
     return responseTest
     
 @auth_api.route('/api/auth/private', methods=['GET'])
-@auth_decorator.login_required
+@auth_decorator.login_required(['moderator'])
 def private(JWT):
     return jsonify(JWT['username'])
     
 @auth_api.route('/api/auth/test', methods=['GET'])
-@auth_decorator.login_required
+@auth_decorator.login_required(['user'])
 def test(JWT):
     return jsonify(JWT)
     
-def generateJWT(username):
+def generateJWT(username, role):
     JWT = {}
     JWT['iss'] = properties.d['JWTIss']
     JWT['iat'] = datetime.datetime.utcnow()
@@ -91,6 +94,7 @@ def generateJWT(username):
     JWT['aud'] = properties.d['JWTAud']
     JWT['sub'] = properties.d['JWTSub']
     JWT['username'] = username
+    JWT['role'] = role;
     JWTEncoded = jwt.encode(JWT, properties.d['JWTSecret'], algorithm=properties.d['JWTAlgo']).decode('utf-8')
     return JWTEncoded
     
