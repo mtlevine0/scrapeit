@@ -23,3 +23,7 @@ function SettingsController($scope, Post) {
 function SummaryController($scope, $routeParams, Post) {
     
 }
+
+function RegistrationController($scope, $routeParams, Post) {
+    
+}

@@ -20,6 +20,10 @@ angular.module('ScrapeIt', ['angularFlaskServices'])
                 templateUrl: '../static/partials/summary.html',
                 controller: SummaryController
             })
+            .when('/register', {
+                templateUrl: '../static/partials/register.html',
+                controller: RegistrationController
+            })
             .otherwise({
                 redirectTo: '/'
             });
